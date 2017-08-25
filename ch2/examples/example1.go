@@ -18,6 +18,7 @@ func main() {
 		res = gcd(*num1, *num2)
 	}
 	fmt.Println(res)
+	specialTupleAssign()
 }
 
 func gcd(x, y int) int {
@@ -33,4 +34,20 @@ func fib(n int) int {
 		x, y = y, x+y
 	}
 	return x
+}
+
+func specialTupleAssign() {
+	//v, ok := m[key] map lookup
+	//v, ok := x.(T)  type assertion
+	//v, ok := <-ch   channel recieve
+	m := make(map[string]string)
+	m["hello"] = "world!"
+	v := m["hello"]
+	fmt.Println(v)
+	v, ok := m["hello"]
+	fmt.Println(v)
+	fmt.Println(ok)
+	v, ok = m["world"]
+	fmt.Println(v)
+	fmt.Println(ok)
 }
