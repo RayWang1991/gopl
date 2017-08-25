@@ -39,7 +39,7 @@ func fib(n int) int {
 func specialTupleAssign() {
 	//v, ok := m[key] map lookup
 	//v, ok := x.(T)  type assertion
-	//v, ok := <-ch   channel recieve
+	//v, ok := <-ch   channel receive
 	m := make(map[string]string)
 	m["hello"] = "world!"
 	v := m["hello"]
