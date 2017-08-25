@@ -9,9 +9,6 @@ import (
 	"strings"
 )
 
-type Inch float64
-type Meter float64
-
 func main() {
 	args := flag.Args()
 	if len(args) > 0 {
@@ -41,5 +38,15 @@ func convStrs(strs []string) {
 }
 
 func conv(num float64) {
-
+	// show C,F,K,I,M
+	c := Celsius(num)
+	fmt.Printf("C:%s F:%s K:%s\n", c, CToF(c), CToK(c))
+	f := Fahrenheit(num)
+	fmt.Printf("F:%s C:%s K:%s\n", f, FToC(f), FToK(f))
+	k := Kelvin(num)
+	fmt.Printf("K:%s C:%s F:%s\n", k, KToC(k), KToF(k))
+	i := Inch(num)
+	fmt.Printf("In:%s M:%s \n", i, InToMeter(i))
+	m := Meter(num)
+	fmt.Printf("M:%s In:%s \n", m, MeterToInch(m))
 }
