@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"os"
 )
 
 func main() {
@@ -14,6 +15,17 @@ func main() {
 	s = "12345678.1234"
 	c2 := comma2(s)
 	fmt.Println(c2)
+	/*
+	for _, string := range os.Args[1:] {
+		fmt.Println(baseName(string))
+	}
+	*/
+	args := os.Args[1:]
+	if len(args) >= 2 {
+		s1 := args[0]
+		s2 := args[1]
+		fmt.Printf("s1 s2 are anagrams of each other: %v\n", anagramSame(s1, s2))
+	}
 }
 
 // comma inserts commas in a non-negative decimal integer string
@@ -58,4 +70,32 @@ func commaForward(s string, sepn int) string {
 		sepn += sepn + 1
 	}
 	return s
+}
+
+// return base name of a path, that is last / component without last .
+func baseName(s string) string {
+	if slash := strings.LastIndex(s, "/"); slash > 0 {
+		s = s[slash+1:]
+	}
+	if dot := strings.LastIndex(s, "."); dot > 0 {
+		s = s[0:dot]
+	}
+	return s
+}
+
+func anagramSame(s1 string, s2 string) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+	m := make(map[rune]int)
+	for _, r := range s1 {
+		m[r]++
+	}
+	for _, r := range s2 {
+		m[r]--
+		if m[r] < 0 {
+			return false
+		}
+	}
+	return true
 }
