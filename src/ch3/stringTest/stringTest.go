@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"os"
+	"unicode/utf8"
 )
 
 func main() {
@@ -26,6 +27,16 @@ func main() {
 		s2 := args[1]
 		fmt.Printf("s1 s2 are anagrams of each other: %v\n", anagramSame(s1, s2))
 	}
+
+	// test slice operator []
+	str := "012345"
+	fmt.Println(str[1:])
+	str = "中国12"
+	fmt.Println(str[1:])
+	b := []byte(str)
+	r,len := utf8.DecodeRune(b)
+	fmt.Println(r,len)
+	fmt.Printf("%s",b[len:])
 }
 
 // comma inserts commas in a non-negative decimal integer string
