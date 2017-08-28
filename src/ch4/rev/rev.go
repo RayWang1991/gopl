@@ -5,7 +5,11 @@ import "fmt"
 func main() {
 	a := [...]int{0, 1, 2, 3, 4, 5}
 	reverse(a[:])
+	b := &a
+	a[1] = 1
+	b[1] = 2
 	fmt.Println(a)
+	fmt.Println(b[1])
 	testEq()
 	s := make([]int, 3) // make([]int,3) returns a slice []int, len 3, cap 3
 	fmt.Printf("The type is %T,len is %d, cap is %d\n", s, len(s), cap(s))
