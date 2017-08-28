@@ -37,6 +37,8 @@ func main() {
 	r,len := utf8.DecodeRune(b)
 	fmt.Println(r,len)
 	fmt.Printf("%s",b[len:])
+	runes := []rune(str)
+	fmt.Printf("%T,%[1]s,%[1]v", runes[1:])
 }
 
 // comma inserts commas in a non-negative decimal integer string
