@@ -10,9 +10,18 @@ import (
 	"gopl.io/ch4/github"
 	"os"
 	"log"
+	"html/template"
 )
 
 const IssueURL = "https://api.github.com/search/issues"
+
+const temp1 = `{{.TotalCount}} issues:
+{{range.Items}}---------------------------
+Number: {{.Number}}
+User: {{.User.Login}}
+Title: {{.Title | printf "%.64s"}}
+Age: {{.CreatedAt | daysAgo}} days
+{{end}}`
 
 type IssueSearchResult struct {
 	TotalCount int `json: "total_count"`
@@ -20,18 +29,22 @@ type IssueSearchResult struct {
 }
 
 type Item struct {
-	Number   int
-	HTMLURL  string `json: "html_url"`
-	Title    string
-	State    string
-	CreateAt time.Time `json: "create_at"`
-	User     *User
-	Body     string
+	Number    int
+	HTMLURL   string `json: "html_url"`
+	Title     string
+	State     string
+	CreatedAt time.Time `json: "create_at"`
+	User      *User
+	Body      string
 }
 
 type User struct {
-	Login string
-	HTML  string `json: html_url`
+	Login   string
+	HTMLURL string `json: html_url`
+}
+
+func daysAgo(t time.Time) int {
+	return int(time.Since(t).Hours() / 24)
 }
 
 func main() {
@@ -47,8 +60,25 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%d issues\n", result.TotalCount)
+	/*
 	for _, item := range result.Items {
 		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+	}
+	*/
+	// using template1
+	/*
+	report, err := template.New("report").
+		Funcs(template.FuncMap{"daysAgo": daysAgo}).Parse(temp1)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := report.Execute(os.Stdout, result); err != nil {
+		log.Fatal(err)
+	}
+	*/
+	// output html
+	if err := issueList.Execute(os.Stdout, result); err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -73,3 +103,24 @@ func SearchIssurs(terms []string) (*IssueSearchResult, error) {
 	resp.Body.Close()
 	return &result, nil
 }
+
+var issueList = template.Must(template.New(`issuelist`).
+	Parse(`
+<h1>{{.TotalCount}} issues</h1>
+<table>
+<tr style='text-align: left'>
+  <th>#</th>
+  <th>State</th>
+  <th>User</th>
+  <th>Title</th>
+</tr>
+{{range.Items}}
+<tr>
+  <td><a href='{{.HTMLURL}}'>{{.Number}}</a></th>
+  <td>{{.State}}</th>
+  <td><a href='{{.User.HTMLURL}}'>{{.User.Login}}</a></th>
+  <td><a href='{{.HTMLURL}}'>{{.Title}}</a></th>
+</tr>
+{{end}}
+</table>
+`))
