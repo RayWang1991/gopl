@@ -8,6 +8,7 @@ import (
 	"strings"
 	"os"
 	"log"
+	"gopl/src/ch5/outline2"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("words: %d images: %d", words, images)
+	fmt.Printf("words: %d images: %d\n", words, images)
 }
 
 func CountWordsAndImages(url string) (words, images int, err error) {
@@ -36,6 +37,7 @@ func CountWordsAndImages(url string) (words, images int, err error) {
 		return
 	}
 	words, images = countWordsAndImages(doc)
+	outline2.Outline2(doc)
 	return
 }
 
