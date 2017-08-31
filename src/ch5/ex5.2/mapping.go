@@ -10,7 +10,7 @@ import (
 func main() {
 	root, err := html.Parse(os.Stdin)
 	if err != nil {
-		log.Fatal("Error on parsing from Stdin %v", err)
+		log.Fatal("Error on parsing html file: %v", err)
 	}
 	count := map[string]int{}
 	traversePreorder(root, count)
