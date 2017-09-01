@@ -6,15 +6,15 @@ import (
 )
 
 func Outline2(node *html.Node) {
-	forEachNode(node, startElement, endElement)
+	ForEachNode(node, startElement, endElement)
 }
 
-func forEachNode(node *html.Node, pre, post func(*html.Node)) {
+func ForEachNode(node *html.Node, pre, post func(*html.Node)) {
 	if pre != nil {
 		pre(node)
 	}
 	for c := node.FirstChild; c != nil; c = c.NextSibling {
-		forEachNode(c, pre, post)
+		ForEachNode(c, pre, post)
 	}
 	if post != nil {
 		post(node)
