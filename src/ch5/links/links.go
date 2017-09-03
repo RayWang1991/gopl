@@ -20,7 +20,7 @@ func Extract(url string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("parsing HTML %s %s", url, err)
 	}
-	links := []string
+	links := []string{}
 	var visitNode = func(n *html.Node) {
 		if n == nil || n.Type == html.ErrorNode {
 			return

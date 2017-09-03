@@ -15,9 +15,6 @@ func (s *IntSet) Has(x int) bool {
 }
 
 func (s *IntSet) Add(x int) {
-	if s == nil {
-		s = &IntSet{}
-	}
 	word, bit := x/64, uint(x%64)
 	if l := len(s.words); word >= l {
 		s.words = append(s.words, make([]uint64, word+1-l)...)
@@ -62,6 +59,7 @@ func main() {
 	s.AddAll(0, 3, 7)
 	fmt.Println(s)
 	var t *IntSet
+	// panic
 	t.Add(1)
 	fmt.Println(t)
 }
