@@ -25,8 +25,16 @@ func fetch(url string) (filename string, n int64, err error) {
 	n, err = io.Copy(f, resp.Body)
 	// Close file, but prefer error from copy, if any
 	// (For NFS like file systems report write errors till the file is closed)
+	/*
 	if closeErr := f.Close(); err == nil {
 		err = closeErr
 	}
+	*/
+	// ex5_18
+	defer func() {
+		if closeErr := f.Close(); err == nil {
+			err = closeErr
+		}
+	}()
 	return local, n, err
 }
