@@ -32,7 +32,7 @@ func main() {
 
 	root := &treeNode{0, &treeNode{value: 1}, &treeNode{value: 2}}
 	//root := (*treeNode)(nil)
-	fmt.Printf("LISP Printer:%s\n", root.String())
+	fmt.Printf("LISP Printer:%v\n", root)
 }
 
 func treesort(values []int) []int {
