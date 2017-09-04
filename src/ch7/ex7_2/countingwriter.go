@@ -27,4 +27,7 @@ func main() {
 	u, i := CountingWriter(w)
 	fmt.Fprint(u, "123456789")
 	fmt.Println(*i)
+	// test inset nil to slice
+	b:=[]*int{nil}
+	fmt.Print(b)
 }
