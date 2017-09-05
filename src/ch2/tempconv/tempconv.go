@@ -15,11 +15,11 @@ const (
 )
 
 func (m Meter) String() string {
-	return fmt.Sprint("%g m", m)
+	return fmt.Sprintf("%f m", m)
 }
 
 func (i Inch) String() string {
-	return fmt.Sprint("%g In", i)
+	return fmt.Sprintf("%f In", i)
 }
 
 func InToMeter(i Inch) Meter {
@@ -31,15 +31,15 @@ func MeterToInch(m Meter) Inch {
 }
 
 func (c Celsius) String() string {
-	return fmt.Sprint("%g°C", c)
+	return fmt.Sprintf("%f°C", float64(c))
 }
 
 func (f Fahrenheit) String() string {
-	return fmt.Sprint("%g°F", f)
+	return fmt.Sprintf("%f°F", float64(f))
 }
 
 func (k Kelvin) String() string {
-	return fmt.Sprint("%gK", k)
+	return fmt.Sprintf("%fK", float64(k))
 }
 
 func CToK(c Celsius) Kelvin {
