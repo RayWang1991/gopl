@@ -16,8 +16,8 @@ const (
 
 type tempflag struct {
 	tempconv.Celsius
-	//tempconv.Fahrenheit
-	//tempconv.Kelvin
+	tempconv.Fahrenheit
+	tempconv.Kelvin
 }
 
 var t = TempFlag1(20.00,"temperatue")
@@ -42,18 +42,18 @@ func (t *tempflag) Set(s string) error{
 	switch unit {
 	case "C", "c":
 		t.Celsius = tempconv.Celsius(value)
-	//	t.Fahrenheit = tempconv.CToF(t.Celsius)
-	//	t.Kelvin = tempconv.CToK(t.Celsius)
-	//	return nil
-	//case "F", "f":
-	//	t.Fahrenheit = tempconv.Fahrenheit(value)
-	//	t.Celsius = tempconv.FToC(t.Fahrenheit)
-	//	t.Kelvin = tempconv.FToK(t.Fahrenheit)
-	//	return nil
-	//case "K", "k":
-	//	t.Kelvin = tempconv.Kelvin(value)
-	//	t.Celsius = tempconv.KToC(t.Kelvin)
-	//	t.Fahrenheit = tempconv.KToF(t.Kelvin)
+		t.Fahrenheit = tempconv.CToF(t.Celsius)
+		t.Kelvin = tempconv.CToK(t.Celsius)
+		return nil
+	case "F", "f":
+		t.Fahrenheit = tempconv.Fahrenheit(value)
+		t.Celsius = tempconv.FToC(t.Fahrenheit)
+		t.Kelvin = tempconv.FToK(t.Fahrenheit)
+		return nil
+	case "K", "k":
+		t.Kelvin = tempconv.Kelvin(value)
+		t.Celsius = tempconv.KToC(t.Kelvin)
+		t.Fahrenheit = tempconv.KToF(t.Kelvin)
 		return nil
 	}
 	return fmt.Errorf("Invalid temperatue")
