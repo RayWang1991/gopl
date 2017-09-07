@@ -3,6 +3,7 @@ package eval
 import (
 	"fmt"
 	"math"
+	"bytes"
 )
 
 // A Var type identifiers a variable, e.g.,x.
@@ -36,7 +37,7 @@ type Expr interface {
 	// Eval returns the value of this Expr in the environment env
 	Eval(env Env) float64
 	Check(vars map[Var]bool) error
-	String()string
+	String() string
 }
 
 func (v Var) Eval(env Env) float64 {
@@ -48,12 +49,20 @@ func (v Var) Check(vars map[Var]bool) error {
 	return nil
 }
 
+func (v Var) String() string {
+	return string(v)
+}
+
 func (i literal) Eval(env Env) float64 {
 	return float64(i)
 }
 
 func (i literal) Check(vars map[Var]bool) error {
 	return nil
+}
+
+func (i literal) String() string {
+	return fmt.Sprintf("%.6g", i)
 }
 
 func (u unary) Eval(env Env) float64 {
@@ -74,6 +83,10 @@ func (u unary) Check(vars map[Var]bool) error {
 	return fmt.Errorf("unsupported unary op %q", u.op)
 }
 
+func (u unary) String() string {
+	return string(u.op) + u.x.String()
+}
+
 func (b binary) Eval(env Env) float64 {
 	switch b.op {
 	case '+':
@@ -90,6 +103,10 @@ func (b binary) Eval(env Env) float64 {
 		return b.x.Eval(env) / b.y.Eval(env)
 	}
 	panic(fmt.Sprintf("unsupported operatoer %q", b.op))
+}
+
+func (b binary) String() string {
+	return b.x.String() + string(b.op) + b.y.String()
 }
 
 func (b binary) Check(vars map[Var]bool) error {
@@ -126,6 +143,17 @@ func (c call) Eval(env Env) float64 {
 		return math.Pow(c.args[0].Eval(env), c.args[1].Eval(env))
 	}
 	panic(fmt.Sprintf("unsupported function %s", c.fn))
+}
+
+func (c call) String() string {
+	buf := new(bytes.Buffer)
+	buf.WriteString(c.fn)
+	buf.WriteByte('(')
+	for _, a := range c.args {
+		buf.WriteString(a.String())
+	}
+	buf.WriteByte(')')
+	return buf.String()
 }
 
 var numParams = map[string]int{

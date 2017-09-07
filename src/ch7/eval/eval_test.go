@@ -13,13 +13,13 @@ func TestEval(t *testing.T) {
 		want string
 	}{
 		{"sqrt(A/pi)", Env{"A": 87616, "pi": math.Pi}, "167"},
-		{"pow(x,3) + pow(y,3)", Env{"x": 12, "y": 1}, "1729"},
-		{"pow(x,3) + pow(y,3)", Env{"x": 9, "y": 10}, "1729"},
+		{"pow(x,3)+pow(y,3)", Env{"x": 12, "y": 1}, "1729"},
+		{"pow(x,3)+pow(y,3)", Env{"x": 9, "y": 10}, "1729"},
 		{"5/9*(F-32)", Env{"F": -40}, "-40"},
 		{"5/9*(F-32)", Env{"F": 32}, "0"},
 		{"5/9*(F-32)", Env{"F": 212}, "100"},
-		{"-1 + -x", Env{"x": 1}, "-2"},
-		{"-1 -x", Env{"x": 1}, "-2"},
+		{"-1+-x", Env{"x": 1}, "-2"},
+		{"-1-x", Env{"x": 1}, "-2"},
 	}
 
 	var prevExpr string
@@ -37,6 +37,34 @@ func TestEval(t *testing.T) {
 		fmt.Printf("\t%v => %s\n", test.env, got)
 		if got != test.want {
 			t.Errorf("%s.Eval() in %v = %q, want %q\n", test.expr, test.env, got, test.want)
+		}
+	}
+}
+
+// can not be same, casue '()'
+func TestString(t *testing.T) {
+	tests := []struct {
+		expr string
+		env  Env
+	}{
+		{"sqrt(A/pi)", Env{"A": 87616, "pi": math.Pi}},
+		{"pow(x,3)+pow(y,3)", Env{"x": 12, "y": 1}},
+		{"pow(x,3)+pow(y,3)", Env{"x": 9, "y": 10}},
+		{"5/9*(F-32)", Env{"F": -40}},
+		{"5/9*(F-32)", Env{"F": 32}},
+		{"5/9*(F-32)", Env{"F": 212}},
+		{"-1+-x", Env{"x": 1}},
+		{"-1-x", Env{"x": 1}},
+	}
+	for _, test := range tests {
+		expr, err := Parse(test.expr)
+		if err != nil {
+			t.Error(err) // parsing error
+			continue
+		}
+		str := expr.String()
+		if str != test.expr {
+			t.Errorf("unmatch expr:%s string:%s", test.expr, str)
 		}
 	}
 }
