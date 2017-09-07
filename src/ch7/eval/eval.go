@@ -1,4 +1,4 @@
-package main
+package eval
 
 import (
 	"fmt"
@@ -47,9 +47,9 @@ func (i literal) Eval(env Env) float64 {
 
 func (u unary) Eval(env Env) float64 {
 	switch u.op {
-	case "+":
+	case '+':
 		return u.x.Eval(env)
-	case "-":
+	case '-':
 		return -u.x.Eval(env)
 	}
 	panic(fmt.Sprintf("unsupported operatoer %s", u.op))
@@ -57,13 +57,13 @@ func (u unary) Eval(env Env) float64 {
 
 func (b binary) Eval(env Env) float64 {
 	switch b.op {
-	case "+":
+	case '+':
 		return b.x.Eval(env) + b.y.Eval(env)
-	case "-":
+	case '-':
 		return b.x.Eval(env) - b.y.Eval(env)
-	case "*":
+	case '*':
 		return b.x.Eval(env) * b.y.Eval(env)
-	case "/":
+	case '/':
 		d := b.y.Eval(env)
 		if d == 0 {
 			panic(fmt.Sprintf("divide zero"))
@@ -79,7 +79,7 @@ func (c call) Eval(env Env) float64 {
 		return math.Sin(c.args[0].Eval(env))
 	case "cos":
 		return math.Cos(c.args[0].Eval(env))
-	case "sprt":
+	case "sqrt":
 		return math.Sqrt(c.args[0].Eval(env))
 	case "pow":
 		return math.Pow(c.args[0].Eval(env), c.args[1].Eval(env))
