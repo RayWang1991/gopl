@@ -2,14 +2,27 @@ package main
 
 import "fmt"
 
-
-func main(){
+func main() {
 	case1()
 	case2()
 }
 
 func case2() {
-
+	ch := make(chan int)
+	go func() {
+		ch <- 1
+		fmt.Println("send1")
+		ch <- 2
+		fmt.Println("send2")
+		ch <- 3
+		fmt.Println("send3")
+		ch <- 4
+		fmt.Println("send4")
+	}()
+	<-ch
+	<-ch
+	<-ch
+	<-ch
 }
 
 func case1() {
