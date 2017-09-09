@@ -3,8 +3,19 @@ package main
 import "fmt"
 
 func main() {
-	case1()
-	case2()
+	case0()
+	//case1()
+	//case2()
+}
+
+// this case test range list allow modify the list or not
+// the result is not, list is just a 'capture'
+func case0() {
+	list := []int{0, 1, 2, 3}
+	for _, i := range list {
+		fmt.Println(i)
+		list = append(list, i)
+	}
 }
 
 func case2() {
