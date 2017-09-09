@@ -5,6 +5,7 @@ import (
 	"log"
 	"io"
 	"os"
+	"fmt"
 )
 
 func main() {
@@ -17,12 +18,12 @@ func main() {
 	// stand for read from the connection
 	go func() {
 		io.Copy(os.Stdout, tc)
-		log.Printf("done reading from connetion!\n")
+		fmt.Printf("done reading from connetion!\n")
 		//tc.CloseRead()
 		done <- true
 	}()
 	io.Copy(tc, os.Stdin)
-	log.Printf("done writing to connetion!\n")
+	fmt.Printf("done writing to connetion!\n")
 	tc.CloseWrite()
 	<-done
 }
