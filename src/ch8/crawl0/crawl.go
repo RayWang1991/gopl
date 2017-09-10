@@ -1,4 +1,4 @@
-package main
+package crawl0
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func crawl(url string) []string {
+func Crawl(url string) []string {
 	fmt.Println(url)
 	list, err := links.Extract(url)
 	if err != nil {
@@ -25,7 +25,7 @@ func main() {
 		for _, url := range items {
 			if !seen[url] {
 				seen[url] = true
-				workList = append(workList, crawl(url)...)
+				workList = append(workList, Crawl(url)...)
 			}
 		}
 	}

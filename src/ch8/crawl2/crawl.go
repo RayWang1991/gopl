@@ -1,1 +1,41 @@
-package crawl2
+package main
+
+import (
+	"fmt"
+	"gopl/src/ch5/links"
+	"log"
+	"os"
+)
+
+func crawl(url string) []string {
+	fmt.Println(url)
+	list, err := links.Extract(url)
+	if err != nil {
+		log.Println(err)
+	}
+	return list
+}
+
+func main() {
+	workLists := make(chan []string)
+	buf := make(chan struct{}, 20)
+	seen := map[string]bool{}
+	// send init urls to work lists
+	go func() {
+		workLists <- os.Args[1:]
+	}()
+
+	// receive lists from work lists
+	for list := range workLists {
+		for _, url := range list {
+			if !seen[url] {
+				seen[url] = true
+				go func(url string) {
+					buf <- struct{}{}
+					workLists <- crawl(url)
+					<-buf
+				}(url)
+			}
+		}
+	}
+}
