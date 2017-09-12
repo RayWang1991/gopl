@@ -28,6 +28,7 @@ func handleConn(c net.Conn) {
 	line := make(chan string)
 	var wg = new(sync.WaitGroup)
 	go func() {
+		// how to terminal this channel?
 		for input.Scan() {
 			line <- input.Text()
 		}
