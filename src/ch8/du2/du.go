@@ -18,6 +18,7 @@ import (
 var verbose = flag.Bool("v", false, "show verbose progress messages")
 
 func main() {
+	starttime := time.Now()
 	flag.Parse()
 	roots := flag.Args()
 	if *verbose {
@@ -25,6 +26,7 @@ func main() {
 	} else {
 		normal(roots)
 	}
+	fmt.Printf("%ds parsed\n", int(time.Since(starttime)/time.Second))
 }
 
 func inVerbose(roots []string) {
