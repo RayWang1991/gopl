@@ -26,7 +26,7 @@ func main() {
 	} else {
 		normal(roots)
 	}
-	fmt.Printf("%ds parsed\n", int(time.Since(starttime)/time.Second))
+	fmt.Printf("%.1fs pased\n", time.Since(starttime).Seconds())
 }
 
 func inVerbose(roots []string) {
