@@ -5,9 +5,11 @@ import (
 	"sync"
 	"fmt"
 	"log"
-	"gopl/src/ch5/links"
 	"os"
 	"bufio"
+	"net/http"
+	"golang.org/x/net/html"
+	"gopl/src/ch5/outline2"
 )
 
 // crawler is a concurrent web crawler, it extracts urls from the html, and then crawl it if it's not visited
@@ -94,13 +96,42 @@ func main() {
 }
 
 func crawl(url string) []string {
-	if isCanceled() {
-		return nil
-	}
 	fmt.Println(url)
-	list, err := links.Extract(url)
+	list, err := extract(url)
 	if err != nil {
 		log.Println(err)
 	}
 	return list
+}
+
+func extract(url string) ([]string, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if nil != err {
+		return nil, err
+	}
+	req.Cancel = done
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("getting:%s %s", url, err)
+	}
+	doc, err := html.Parse(resp.Body)
+	resp.Body.Close()
+	if err != nil {
+		return nil, fmt.Errorf("parsing HTML %s %s", url, err)
+	}
+	links := []string{}
+	var visitNode = func(n *html.Node) {
+		if n == nil || n.Type == html.ErrorNode {
+			return
+		}
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, a := range n.Attr {
+				if a.Key == "href" {
+					links = append(links, a.Val)
+				}
+			}
+		}
+	}
+	outline2.ForEachNode(doc, visitNode, nil)
+	return links, nil
 }
