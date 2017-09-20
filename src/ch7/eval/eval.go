@@ -26,7 +26,7 @@ type binary struct {
 
 // A call represents a function call, e.g. sin(x).
 type call struct {
-	fn   string // pow, sin, cos ,sqrt
+	fn   string // pow, sin, cos, sqrt
 	args []Expr
 }
 

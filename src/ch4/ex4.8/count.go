@@ -1,18 +1,13 @@
-package main
+package count
 
 import (
 	"io"
 	"fmt"
 	"unicode"
 	"bufio"
-	"os"
 )
 
-func main() {
-	count(os.Stdin)
-}
-
-func count(reader io.Reader) {
+func count(reader io.Reader) (d int, l int) {
 	counts := map[rune]int{}
 	letters, digits := 0, 0
 	scanner := bufio.NewReader(reader)
@@ -34,10 +29,5 @@ func count(reader io.Reader) {
 		}
 		counts[r]++
 	}
-	for k, v := range counts {
-		fmt.Printf("rune: %6q, count%6d\n", k, v)
-	}
-	fmt.Println()
-	fmt.Printf("letter: %6d\n", letters)
-	fmt.Printf("digits: %6d\n", digits)
+	return digits, letters
 }
