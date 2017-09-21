@@ -41,4 +41,5 @@ func display(path string, v reflect.Value) {
 	default:
 		fmt.Printf("%s = %s\n", path, formatAtom(v))
 	}
+	reflect.New(v.Type().Elem()).Elem()
 }
